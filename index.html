@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>amCharts v5 — учебный проект</title>
+
+    <!-- Core -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+
+    <!-- Charts -->
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+
+    <!-- Theme -->
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .chart {
+        width: 100%;
+        height: 400px;
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>amCharts v5 — тестовые графики</h1>
+
+    <h2>1. Круговая диаграмма</h2>
+    <div id="pieChart" class="chart"></div>
+
+    <h2>2. Линейный график</h2>
+    <div id="lineChart" class="chart"></div>
+
+    <script>
+      am5.ready(function () {
+        /* КРУГОВАЯ ДИАГРАММА */
+        const rootPie = am5.Root.new("pieChart");
+        rootPie.setThemes([am5themes_Animated.new(rootPie)]);
+
+        const pieChart = rootPie.container.children.push(
+          am5percent.PieChart.new(rootPie, {})
+        );
+
+        const pieSeries = pieChart.series.push(
+          am5percent.PieSeries.new(rootPie, {
+            valueField: "value",
+            categoryField: "category",
+          })
+        );
+
+        pieSeries.data.setAll([
+          { category: "1", value: 40 },
+          { category: "2", value: 30 },
+          { category: "3", value: 30 },
+        ]);
+
+        /* ЛИНЕЙНЫЙ ГРАФИК */
+        const rootLine = am5.Root.new("lineChart");
+        rootLine.setThemes([am5themes_Animated.new(rootLine)]);
+
+        const lineChart = rootLine.container.children.push(
+          am5xy.XYChart.new(rootLine, {})
+        );
+
+        const xAxis = lineChart.xAxes.push(
+          am5xy.ValueAxis.new(rootLine, {
+            renderer: am5xy.AxisRendererX.new(rootLine, {}),
+          })
+        );
+
+        const yAxis = lineChart.yAxes.push(
+          am5xy.ValueAxis.new(rootLine, {
+            renderer: am5xy.AxisRendererY.new(rootLine, {}),
+          })
+        );
+
+        const lineSeries = lineChart.series.push(
+          am5xy.LineSeries.new(rootLine, {
+            xAxis: xAxis,
+            yAxis: yAxis,
+            valueXField: "x",
+            valueYField: "y",
+          })
+        );
+
+        lineSeries.data.setAll([
+          { x: 1, y: 10 },
+          { x: 2, y: 18 },
+          { x: 3, y: 14 },
+          { x: 4, y: 22 },
+        ]);
+      });
+    </script>
+  </body>
+</html>
