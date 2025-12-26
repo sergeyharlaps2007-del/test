@@ -36,6 +36,9 @@
     <h2>2. Линейный график</h2>
     <div id="lineChart" class="chart"></div>
 
+    <h2>3. Столбчатая диаграмма</h2>
+    <div id="columnChart" class="chart"></div>
+
     <script>
       am5.ready(function () {
         /* КРУГОВАЯ ДИАГРАММА */
@@ -95,6 +98,46 @@
           { x: 4, y: 22 },
         ]);
       });
+      /* СТОЛБЧАТЫЙ ГРАФИК */
+      // Docs: https://www.amcharts.com/docs/v5/charts/xy-chart/column-series/
+
+      const rootColumn = am5.Root.new("columnChart");
+      rootColumn.setThemes([am5themes_Animated.new(rootColumn)]);
+
+      const columnChart = rootColumn.container.children.push(
+        am5xy.XYChart.new(rootColumn, {})
+      );
+
+      const columnXAxis = columnChart.xAxes.push(
+        am5xy.CategoryAxis.new(rootColumn, {
+          categoryField: "category",
+          renderer: am5xy.AxisRendererX.new(rootColumn, {}),
+        })
+      );
+
+      const columnYAxis = columnChart.yAxes.push(
+        am5xy.ValueAxis.new(rootColumn, {
+          renderer: am5xy.AxisRendererY.new(rootColumn, {}),
+        })
+      );
+
+      const columnSeries = columnChart.series.push(
+        am5xy.ColumnSeries.new(rootColumn, {
+          xAxis: columnXAxis,
+          yAxis: columnYAxis,
+          categoryXField: "category",
+          valueYField: "value",
+        })
+      );
+
+      const columnData = [
+        { category: "A", value: 10 },
+        { category: "B", value: 15 },
+        { category: "C", value: 8 },
+      ];
+
+      columnXAxis.data.setAll(columnData);
+      columnSeries.data.setAll(columnData);
     </script>
   </body>
 </html>
