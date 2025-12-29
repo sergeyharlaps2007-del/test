@@ -42,6 +42,9 @@
     <h2>4. Donut диаграмма</h2>
     <div id="donutChart" class="chart"></div>
 
+    <h2>6. Scatter (XY)</h2>
+    <div id="scatterChart" class="chart"></div>
+
     <script>
       am5.ready(function () {
         /* КРУГОВАЯ ДИАГРАММА */
@@ -100,70 +103,113 @@
           { x: 3, y: 14 },
           { x: 4, y: 22 },
         ]);
+
+        /* СТОЛБЧАТЫЙ ГРАФИК */
+        // Docs: https://www.amcharts.com/docs/v5/charts/xy-chart/column-series/
+
+        const rootColumn = am5.Root.new("columnChart");
+        rootColumn.setThemes([am5themes_Animated.new(rootColumn)]);
+
+        const columnChart = rootColumn.container.children.push(
+          am5xy.XYChart.new(rootColumn, {})
+        );
+
+        const columnXAxis = columnChart.xAxes.push(
+          am5xy.CategoryAxis.new(rootColumn, {
+            categoryField: "category",
+            renderer: am5xy.AxisRendererX.new(rootColumn, {}),
+          })
+        );
+
+        const columnYAxis = columnChart.yAxes.push(
+          am5xy.ValueAxis.new(rootColumn, {
+            renderer: am5xy.AxisRendererY.new(rootColumn, {}),
+          })
+        );
+
+        const columnSeries = columnChart.series.push(
+          am5xy.ColumnSeries.new(rootColumn, {
+            xAxis: columnXAxis,
+            yAxis: columnYAxis,
+            categoryXField: "category",
+            valueYField: "value",
+          })
+        );
+
+        const columnData = [
+          { category: "A", value: 10 },
+          { category: "B", value: 15 },
+          { category: "C", value: 8 },
+        ];
+
+        columnXAxis.data.setAll(columnData);
+        columnSeries.data.setAll(columnData);
+
+        /* DONUT */
+        // Docs: https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+
+        const rootDonut = am5.Root.new("donutChart");
+        rootDonut.setThemes([am5themes_Animated.new(rootDonut)]);
+
+        const donutChart = rootDonut.container.children.push(
+          am5percent.PieChart.new(rootDonut, {
+            innerRadius: am5.percent(50),
+          })
+        );
+
+        const donutSeries = donutChart.series.push(
+          am5percent.PieSeries.new(rootDonut, {
+            valueField: "value",
+            categoryField: "category",
+          })
+        );
+
+        donutSeries.data.setAll([
+          { category: "X", value: 60 },
+          { category: "Y", value: 40 },
+        ]);
       });
-      /* СТОЛБЧАТЫЙ ГРАФИК */
-      // Docs: https://www.amcharts.com/docs/v5/charts/xy-chart/column-series/
+      /* SCATTER (XY) */
+      // Docs: https://www.amcharts.com/docs/v5/charts/xy-chart/scatter-chart/
 
-      const rootColumn = am5.Root.new("columnChart");
-      rootColumn.setThemes([am5themes_Animated.new(rootColumn)]);
+      const rootScatter = am5.Root.new("scatterChart");
+      rootScatter.setThemes([am5themes_Animated.new(rootScatter)]);
 
-      const columnChart = rootColumn.container.children.push(
-        am5xy.XYChart.new(rootColumn, {})
+      const scatterChart = rootScatter.container.children.push(
+        am5xy.XYChart.new(rootScatter, {})
       );
 
-      const columnXAxis = columnChart.xAxes.push(
-        am5xy.CategoryAxis.new(rootColumn, {
-          categoryField: "category",
-          renderer: am5xy.AxisRendererX.new(rootColumn, {}),
+      const scatterXAxis = scatterChart.xAxes.push(
+        am5xy.ValueAxis.new(rootScatter, {
+          renderer: am5xy.AxisRendererX.new(rootScatter, {}),
         })
       );
 
-      const columnYAxis = columnChart.yAxes.push(
-        am5xy.ValueAxis.new(rootColumn, {
-          renderer: am5xy.AxisRendererY.new(rootColumn, {}),
+      const scatterYAxis = scatterChart.yAxes.push(
+        am5xy.ValueAxis.new(rootScatter, {
+          renderer: am5xy.AxisRendererY.new(rootScatter, {}),
         })
       );
 
-      const columnSeries = columnChart.series.push(
-        am5xy.ColumnSeries.new(rootColumn, {
-          xAxis: columnXAxis,
-          yAxis: columnYAxis,
-          categoryXField: "category",
-          valueYField: "value",
+      const scatterSeries = scatterChart.series.push(
+        am5xy.LineSeries.new(rootScatter, {
+          xAxis: scatterXAxis,
+          yAxis: scatterYAxis,
+          valueXField: "x",
+          valueYField: "y",
         })
       );
 
-      const columnData = [
-        { category: "A", value: 10 },
-        { category: "B", value: 15 },
-        { category: "C", value: 8 },
-      ];
-
-      columnXAxis.data.setAll(columnData);
-      columnSeries.data.setAll(columnData);
-
-      /* DONUT */
-      // Docs: https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-
-      const rootDonut = am5.Root.new("donutChart");
-      rootDonut.setThemes([am5themes_Animated.new(rootDonut)]);
-
-      const donutChart = rootDonut.container.children.push(
-        am5percent.PieChart.new(rootDonut, {
-          innerRadius: am5.percent(50),
+      scatterSeries.bullets.push(() =>
+        am5.Bullet.new(rootScatter, {
+          sprite: am5.Circle.new(rootScatter, { radius: 6 }),
         })
       );
 
-      const donutSeries = donutChart.series.push(
-        am5percent.PieSeries.new(rootDonut, {
-          valueField: "value",
-          categoryField: "category",
-        })
-      );
-
-      donutSeries.data.setAll([
-        { category: "X", value: 60 },
-        { category: "Y", value: 40 },
+      scatterSeries.data.setAll([
+        { x: 1, y: 2 },
+        { x: 2, y: 4 },
+        { x: 3, y: 3 },
       ]);
     </script>
   </body>
