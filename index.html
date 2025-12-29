@@ -45,6 +45,9 @@
     <h2>6. Scatter (XY)</h2>
     <div id="scatterChart" class="chart"></div>
 
+    <h2>7. Candlestick</h2>
+    <div id="candleChart" class="chart"></div>
+
     <script>
       am5.ready(function () {
         /* КРУГОВАЯ ДИАГРАММА */
@@ -210,6 +213,44 @@
         { x: 1, y: 2 },
         { x: 2, y: 4 },
         { x: 3, y: 3 },
+      ]);
+      /* CANDLESTICK */
+      // Docs: https://www.amcharts.com/docs/v5/charts/xy-chart/candlestick-chart/
+
+      const rootCandle = am5.Root.new("candleChart");
+      rootCandle.setThemes([am5themes_Animated.new(rootCandle)]);
+
+      const candleChart = rootCandle.container.children.push(
+        am5xy.XYChart.new(rootCandle, {})
+      );
+
+      const candleXAxis = candleChart.xAxes.push(
+        am5xy.ValueAxis.new(rootCandle, {
+          renderer: am5xy.AxisRendererX.new(rootCandle, {}),
+        })
+      );
+
+      const candleYAxis = candleChart.yAxes.push(
+        am5xy.ValueAxis.new(rootCandle, {
+          renderer: am5xy.AxisRendererY.new(rootCandle, {}),
+        })
+      );
+
+      const candleSeries = candleChart.series.push(
+        am5xy.CandlestickSeries.new(rootCandle, {
+          xAxis: candleXAxis,
+          yAxis: candleYAxis,
+          valueXField: "x",
+          openValueYField: "open",
+          valueYField: "close",
+          lowValueYField: "low",
+          highValueYField: "high",
+        })
+      );
+
+      candleSeries.data.setAll([
+        { x: 1, open: 10, close: 15, low: 8, high: 18 },
+        { x: 2, open: 15, close: 12, low: 10, high: 17 },
       ]);
     </script>
   </body>
