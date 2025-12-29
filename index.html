@@ -39,6 +39,9 @@
     <h2>3. Столбчатая диаграмма</h2>
     <div id="columnChart" class="chart"></div>
 
+    <h2>4. Donut диаграмма</h2>
+    <div id="donutChart" class="chart"></div>
+
     <script>
       am5.ready(function () {
         /* КРУГОВАЯ ДИАГРАММА */
@@ -138,6 +141,30 @@
 
       columnXAxis.data.setAll(columnData);
       columnSeries.data.setAll(columnData);
+
+      /* DONUT */
+      // Docs: https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+
+      const rootDonut = am5.Root.new("donutChart");
+      rootDonut.setThemes([am5themes_Animated.new(rootDonut)]);
+
+      const donutChart = rootDonut.container.children.push(
+        am5percent.PieChart.new(rootDonut, {
+          innerRadius: am5.percent(50),
+        })
+      );
+
+      const donutSeries = donutChart.series.push(
+        am5percent.PieSeries.new(rootDonut, {
+          valueField: "value",
+          categoryField: "category",
+        })
+      );
+
+      donutSeries.data.setAll([
+        { category: "X", value: 60 },
+        { category: "Y", value: 40 },
+      ]);
     </script>
   </body>
 </html>
