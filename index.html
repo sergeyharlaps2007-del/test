@@ -15,6 +15,10 @@
     <!-- Theme -->
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
+    <script src="https://cdn.amcharts.com/lib/5/flow.js"></script>
+
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -47,6 +51,12 @@
 
     <h2>7. Candlestick</h2>
     <div id="candleChart" class="chart"></div>
+
+    <h2>8. Sankey</h2>
+    <div id="flowChart" class="chart"></div>
+
+    <h2>10. Hierarchy (Tree)</h2>
+    <div id="treeChart" class="chart"></div>
 
     <script>
       am5.ready(function () {
@@ -251,6 +261,50 @@
       candleSeries.data.setAll([
         { x: 1, open: 10, close: 15, low: 8, high: 18 },
         { x: 2, open: 15, close: 12, low: 10, high: 17 },
+      ]);
+      /* SANKEY */
+      // Docs: https://www.amcharts.com/docs/v5/charts/flow-charts/sankey-diagram/
+
+      const rootFlow = am5.Root.new("flowChart");
+      rootFlow.setThemes([am5themes_Animated.new(rootFlow)]);
+
+      const sankey = rootFlow.container.children.push(
+        am5flow.Sankey.new(rootFlow, {
+          sourceIdField: "from",
+          targetIdField: "to",
+          valueField: "value",
+        })
+      );
+
+      sankey.data.setAll([
+        { from: "A", to: "B", value: 10 },
+        { from: "B", to: "C", value: 5 },
+      ]);
+      /* HIERARCHY (TREE) */
+      // Docs: https://www.amcharts.com/docs/v5/charts/hierarchy/
+
+      const rootTree = am5.Root.new("treeChart");
+      rootTree.setThemes([am5themes_Animated.new(rootTree)]);
+
+      const tree = rootTree.container.children.push(
+        am5hierarchy.Tree.new(rootTree, {
+          singleBranchOnly: false,
+          downDepth: 1,
+          initialDepth: 2,
+          valueField: "value",
+          categoryField: "name",
+          childDataField: "children",
+        })
+      );
+
+      tree.data.setAll([
+        {
+          name: "Root",
+          children: [
+            { name: "Child 1", value: 10 },
+            { name: "Child 2", value: 20 },
+          ],
+        },
       ]);
     </script>
   </body>
